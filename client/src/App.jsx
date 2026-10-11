@@ -4,6 +4,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 
+/**
+ * Renders the welcome page with an interactive counter and resource links.
+ * @returns {import('react').ReactElement} The welcome page content.
+ */
 function App() {
   const [count, setCount] = useState(0)
 
