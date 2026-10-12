@@ -182,16 +182,10 @@ be reimplemented:
    reaches every method; split services to gate separately), rotated only by
    removing the binding or destroying the stack and redeploying, and stored
    in deploy-owned `COMPOSER_*` variables you never hand-edit.
-2. **Idempotency and retries.** Every generated-client call carries an
-   `Idempotency-Key`; dropped calls retry with backoff, and `serve()` runs
-   one call per key, replaying the completed answer to late retries. Every
-   method is therefore safely retryable and no contract declares anything
-   about it (there is no "is this idempotent" flag; don't invent one). A
-   handler may take an optional third argument `(input, deps, ctx)` and read
-   `ctx.idempotencyKey` (`string | undefined`) if it needs exactly-once
-   beyond one instance's memory; most don't. Locally and in tests nothing is
-   provisioned, so `serve()` passes every call through: never supply a key
-   in test inputs.
+2. Idempotency and retries. Every generated-client call carries an
+   Idempotency-Key; dropped calls retry with backoff, and serve() runs
+   one call per key, replaying the completed answer to late retries.
+   Every method is therefore safely retryable...
 
 ## Builds are yours
 
