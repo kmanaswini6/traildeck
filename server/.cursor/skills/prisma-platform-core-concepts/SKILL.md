@@ -143,10 +143,13 @@ branch is the environment, and branches come into being by deploying to them:
    it. A stage name must be a valid git ref name; an invalid name is a hard
    error.
 
-A preview branch that needs a database gets a fresh, empty one, wired in as a
-branch-scoped `DATABASE_URL`. Preview work can never touch production data
-unless you explicitly point it there. Schema comes from your committed
-migrations; data does not follow from production.
+A preview branch that needs a database gets a fresh, empty one when the database
+is declared in the Composer module. It is wired in as a branch-scoped
+`DATABASE_URL`. If the application uses an external database through
+`DATABASE_URL`, the resolved URL determines which database is used; configure
+a preview-scoped URL that points to a non-production database. Preview work
+must not touch production data unintentionally. Schema comes from your
+committed migrations; data does not follow from production.
 
 Preview lifecycle rules:
 
