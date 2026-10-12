@@ -182,10 +182,7 @@ be reimplemented:
    reaches every method; split services to gate separately), rotated only by
    removing the binding or destroying the stack and redeploying, and stored
    in deploy-owned `COMPOSER_*` variables you never hand-edit.
-2. Idempotency and retries. Every generated-client call carries an
-   Idempotency-Key; dropped calls retry with backoff, and serve() runs
-   one call per key, replaying the completed answer to late retries.
-   Every method is therefore safely retryable...
+2. **Idempotency and retries.** Every generated-client call carries an `Idempotency-Key`; dropped calls retry with backoff, and `serve()` deduplicates calls and replays completed answers within a single provider process. A retry routed to another instance may execute the handler again. Handlers with non-idempotent side effects must persist or otherwise enforce idempotency using `ctx.idempotencyKey` when available. A handler may take an optional third argument `(input, deps, ctx)` and read `ctx.idempotencyKey` (`string | undefined`) to implement this protection. Locally and in tests, idempotency is not provisioned, so `serve()` passes calls through without deduplication.
 
 ## Builds are yours
 
@@ -540,11 +537,12 @@ today the blocks above plus your own Modules are the whole set, so verify a
 3. **Scale-to-zero closes idle database connections.** A persistent client
    crashes into a 502 restart loop unless the pool is small and
    reconnect-friendly (`new SQL({ url, max: 1, idleTimeout: 10 })` for Bun)
-   and the process logs `uncaughtException`/`unhandledRejection` instead of
-   dying. Under `dev`, add `prepare: false` as well: the local Postgres
-   is one session shared by every connection and it outlives your
-   processes, so a restarted process collides on prepared-statement
-   names (42P05) and crash-loops.
+   Recover recoverable database disconnections at the database-client
+   boundary. Do not resume serving requests after an uncaught exception; log
+   the fault and terminate the process so that the process supervisor can
+   restart it. Under `dev`, add `prepare: false` as well when needed to
+   avoid prepared-statement name collisions with the shared local Postgres
+   session.
 4. **Cold starts reset service-to-service connections.** A call into a
    scaled-to-zero service can get `ECONNRESET`; retry it.
 5. **Bind `0.0.0.0`, not loopback.** The platform routes external HTTP to
