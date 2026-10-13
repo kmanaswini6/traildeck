@@ -2,11 +2,11 @@
 
 ## Current status
 - **Current phase:** Phase 1 — Walking skeleton
-- **Current task:** Day 2 — Prisma schema, first migration, and seed
-- **Task status:** Implementation, verification, and cleanup review completed; ready for user commit
-- **Branch:** `chore/prisma-schema`
-- **Last updated:** 2026-10-13 (cleanup review)
-- **Next task:** Day 2 — Auth API (register/login/me) with tests
+- **Current task:** Day 2 — Auth API (register/login/me) with tests
+- **Task status:** Implemented and verified (28/28 tests pass); awaiting user commit
+- **Branch:** `feat/auth-api`
+- **Last updated:** 2026-10-13 (auth API)
+- **Next task:** Commit (user performs this), then Phase 2 — Clients and cases
 
 ## Phase index
 
