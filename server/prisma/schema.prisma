@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  LAWYER
+  CLIENT
+}
+
+enum CaseStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lawyerClients Client[] @relation("LawyerClients")
+  portalClient  Client?  @relation("ClientPortalUser")
+  lawyerCases   Case[]   @relation("LawyerCases")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?
+  phone     String?
+  lawyerId  String
+  lawyer    User     @relation("LawyerClients", fields: [lawyerId], references: [id], onDelete: Restrict)
+  userId    String?  @unique
+  portalUser User?   @relation("ClientPortalUser", fields: [userId], references: [id], onDelete: Restrict)
+  cases     Case[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lawyerId])
+}
+
+model Case {
+  id            String     @id @default(uuid())
+  title         String
+  caseNumber    String
+  court         String?
+  type          String?
+  opposingParty String?
+  status        CaseStatus @default(OPEN)
+  lawyerId      String
+  lawyer        User       @relation("LawyerCases", fields: [lawyerId], references: [id], onDelete: Restrict)
+  clientId      String
+  client        Client     @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@unique([lawyerId, caseNumber])
+  @@index([lawyerId])
+  @@index([clientId])
+  @@index([status])
+}

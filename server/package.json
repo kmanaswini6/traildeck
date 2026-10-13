@@ -4,16 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
     "postinstall": "prisma skills sync || exit 0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
     "@google/genai": "^2.28.0",
-    "@prisma/client": "^7.10.0",
+    "@prisma/client": "^6.19.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.11.0",
     "cors": "^2.8.6",
@@ -28,7 +31,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14",
-    "prisma": "^8.0.0-rc.22",
+    "prisma": "^6.19.0",
     "supertest": "^7.3.1",
     "vitest": "^5.0.3"
   }
