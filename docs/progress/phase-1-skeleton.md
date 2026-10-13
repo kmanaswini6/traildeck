@@ -79,6 +79,7 @@
 - Resume (2026-10-13): root-cause of the timeout confirmed — repo root has no local Prisma install, so bare `npx prisma` resolved the `latest` tag (8.0.0-rc.22) and tried to download it. Local `server/node_modules/prisma` is intact at 6.19.0; validation via the local executable passes. Nothing was installed; versions unchanged.
 - Resume: `server/package.json` contains exactly one `test` key (`vitest run`) — the earlier diff display was just `-`/`+` lines, no duplicate key; no correction needed.
 - Resume: malformed-JSON probe (`POST /api/auth/login` with `{bad json`) returns generic 500 `INTERNAL_ERROR`, no leaked details. Semantically a 400 would be nicer, but no leak and outside the task's test scope — left unchanged; approve a follow-up if you want it mapped to 400 `VALIDATION_ERROR`.
+- Follow-up (2026-10-13): malformed JSON now returns 400 `VALIDATION_ERROR` via `entity.parse.failed` branch in `src/app.js`; `npx --no-install vitest run src/routes/auth.test.js` — 29/29 passed; `npm test` — 29/29 passed; `node --check` on both changed files — exit 0; `git diff --check` clean; lockfile unchanged.
 - No Neon contact, no server started, `.env` never read; no dependencies changed; no commit or push performed.
 
 Plan register, login, and `/me` endpoints with tests. Read `AGENTS.md`, `docs/progress/README.md`, and this phase file first. Start in Plan mode, list files and risks, and wait for user approval before editing.

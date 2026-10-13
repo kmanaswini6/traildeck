@@ -317,6 +317,17 @@ describe("GET /api/auth/me", () => {
 });
 
 describe("error handling", () => {
+  it("returns 400 VALIDATION_ERROR for a malformed JSON body", async () => {
+    const res = await request(app)
+      .post("/api/auth/register")
+      .set("Content-Type", "application/json")
+      .send("{bad json");
+
+    expectErrorShape(res, 400, "VALIDATION_ERROR");
+    expect(prisma.user.findUnique).not.toHaveBeenCalled();
+    expect(prisma.user.create).not.toHaveBeenCalled();
+  });
+
   it("returns 500 INTERNAL_ERROR without leaking DB text on unexpected failure", async () => {
     prisma.user.findUnique.mockRejectedValue(new Error("boom-simulated-db-text"));
 
