@@ -3,10 +3,10 @@
 ## Current status
 - **Current phase:** Phase 1 — Walking skeleton
 - **Current task:** Day 2 — Auth API (register/login/me) with tests
-- **Task status:** Implemented and verified (28/28 tests pass); awaiting user commit
+- **Task status:** Implemented and verified (29/29 tests pass); committed as 219ef4e + 307bd5e
 - **Branch:** `feat/auth-api`
-- **Last updated:** 2026-10-13 (auth API)
-- **Next task:** Commit (user performs this), then Phase 2 — Clients and cases
+- **Last updated:** 2026-10-13 (auth API + malformed-JSON fix)
+- **Next task:** Phase 2 — Clients and cases
 
 ## Phase index
 

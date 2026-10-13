@@ -12,7 +12,7 @@
 - [x] Confirm local `server/.env` is ignored by Git.
 - [x] Run `git diff --check`; no output was returned.
 - [x] Review final changes, lockfile, and Prisma config backup.
-- [ ] Commit (user performs this).
+- [x] Commit (user performs this) — committed as 8c92fdb.
 
 ### Result log
 
@@ -43,24 +43,24 @@
 
 ## Next task: Day 2 — Auth API
 
-### Day 2: Auth API (register, login, me) with tests — DONE, awaiting commit
+### Day 2: Auth API (register, login, me) with tests — DONE, committed as 219ef4e + 307bd5e
 
 - [x] `POST /api/auth/register` creates role CLIENT, returns 201 `{ user, token }`.
 - [x] `POST /api/auth/login` returns 200; wrong password and unknown email give identical 401s.
 - [x] `GET /api/auth/me` returns 200 `{ user }`; expired/deleted-user/missing/garbage tokens give 401s.
 - [x] All failures use `{ error: { code, message, details } }`; unexpected faults give 500 `INTERNAL_ERROR` with no leak.
-- [x] Auth tests pass (28/28); full backend suite passes (same file, only suite).
+- [x] Auth tests pass (29/29); full backend suite passes (same file, only suite).
 - [x] `node --check` passes on all 8 new/changed `.js` files.
 - [x] `npx prisma validate` passes; schema/migrations untouched.
 - [x] `git diff --check` clean; lockfile unchanged; diff secret scan clean.
 - [ ] Lint — not run (no lint script in `server/package.json`).
-- [ ] Commit (user performs this).
+- [x] Commit (user performs this) — committed as 219ef4e + 307bd5e.
 
 ### Result log (Auth API, 2026-10-13, branch `feat/auth-api`)
 
-- `npx vitest run src/routes/auth.test.js` (from `server`) — 1 file passed, 28 tests passed (10.42s).
-- `npm test` (`vitest run`, full suite) — 1 file passed, 28 tests passed (2.20s).
-- Re-verification (2026-10-13, resume): `npm test` — 1 file passed, 28 tests passed (2.21s); `npx --no-install vitest run src/routes/auth.test.js` — 28 passed (2.32s).
+- Superseded (29-test suite now current): `npx vitest run src/routes/auth.test.js` (from `server`) — 1 file passed, 28 tests passed (10.42s).
+- Superseded (29-test suite now current): `npm test` (`vitest run`, full suite) — 1 file passed, 28 tests passed (2.20s).
+- Superseded (29-test suite now current): Re-verification (2026-10-13, resume): `npm test` — 1 file passed, 28 tests passed (2.21s); `npx --no-install vitest run src/routes/auth.test.js` — 28 passed (2.32s).
 - `node --check` on `src/prisma.js`, `src/errors.js`, `src/auth.js`, `src/routes/auth.js`, `src/app.js`, `src/server.js`, `src/routes/auth.test.js`, `vitest.config.js` — all exit 0.
 - `npx prisma validate` (from `server`) — passed, schema valid.
 - Re-verification (resume): local executable `node ./node_modules/prisma/build/index.js validate` (Prisma 6.19.0, from `server`) — passed, schema valid. `npm ls prisma @prisma/client --depth=0` — both 6.19.0.
@@ -78,8 +78,8 @@
 - Mishap: `npx prisma validate` first run from repo root made npx try to fetch Prisma 8.0.0-rc.22 and timed out; no repo effect. Re-ran from `server/` (local 6.19.0) — passed. Always run Prisma/npm commands from `server/`.
 - Resume (2026-10-13): root-cause of the timeout confirmed — repo root has no local Prisma install, so bare `npx prisma` resolved the `latest` tag (8.0.0-rc.22) and tried to download it. Local `server/node_modules/prisma` is intact at 6.19.0; validation via the local executable passes. Nothing was installed; versions unchanged.
 - Resume: `server/package.json` contains exactly one `test` key (`vitest run`) — the earlier diff display was just `-`/`+` lines, no duplicate key; no correction needed.
-- Resume: malformed-JSON probe (`POST /api/auth/login` with `{bad json`) returns generic 500 `INTERNAL_ERROR`, no leaked details. Semantically a 400 would be nicer, but no leak and outside the task's test scope — left unchanged; approve a follow-up if you want it mapped to 400 `VALIDATION_ERROR`.
+- Superseded by follow-up (307bd5e): malformed-JSON probe (`POST /api/auth/login` with `{bad json`) returned generic 500 `INTERNAL_ERROR`, no leaked details. The follow-up mapped this to 400 `VALIDATION_ERROR` (see next line).
 - Follow-up (2026-10-13): malformed JSON now returns 400 `VALIDATION_ERROR` via `entity.parse.failed` branch in `src/app.js`; `npx --no-install vitest run src/routes/auth.test.js` — 29/29 passed; `npm test` — 29/29 passed; `node --check` on both changed files — exit 0; `git diff --check` clean; lockfile unchanged.
-- No Neon contact, no server started, `.env` never read; no dependencies changed; no commit or push performed.
+- No Neon contact, no server started, `.env` never read; no dependencies changed. Auth API commits 219ef4e and 307bd5e performed by user.
 
 Plan register, login, and `/me` endpoints with tests. Read `AGENTS.md`, `docs/progress/README.md`, and this phase file first. Start in Plan mode, list files and risks, and wait for user approval before editing.
