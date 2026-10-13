@@ -1,12 +1,12 @@
 ﻿# TrailDeck Progress Log
 
 ## Current status
-- **Current phase:** Phase 1 — Walking skeleton
-- **Current task:** Day 2 — Auth API (register/login/me) with tests
-- **Task status:** Implemented and verified (29/29 tests pass); committed as 219ef4e + 307bd5e
-- **Branch:** `feat/auth-api`
-- **Last updated:** 2026-10-13 (auth API + malformed-JSON fix)
-- **Next task:** Phase 2 — Clients and cases
+- **Current phase:** Phase 2 — Clients and cases
+- **Current task:** Task 2.1 — Backend client management
+- **Task status:** Implemented and verified (61/61 tests pass); awaiting user commit
+- **Branch:** `feat/clients-api`
+- **Last updated:** 2026-10-13 (task 2.1)
+- **Next task:** Task 2.2 — Clients UI
 
 ## Phase index
 
@@ -14,7 +14,7 @@
 |---|---|---|
 | 0 Setup and agreement | `phase-0-setup.md` | Existing status to confirm |
 | 1 Walking skeleton | `phase-1-skeleton.md` | In progress |
-| 2 Clients and cases | `phase-2-clients-cases.md` | Not started |
+| 2 Clients and cases | `phase-2-clients-cases.md` | In progress (task 2.1 done) |
 | 3 Document upload and processing | `phase-3-documents.md` | Not started |
 | 4 RAG assistant | `phase-4-rag.md` | Not started |
 | 5 Hearings, timeline, dashboard | `phase-5-hearings-timeline.md` | Not started |

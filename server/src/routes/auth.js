@@ -2,7 +2,7 @@ import { Router } from "express";
 import bcryptjs from "bcryptjs";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../prisma.js";
-import { sendError } from "../errors.js";
+import { sendError, validationDetails } from "../errors.js";
 import {
   SAFE_USER_SELECT,
   dummyCompare,
@@ -14,14 +14,6 @@ import {
 } from "../auth.js";
 
 const router = Router();
-
-function validationDetails(zodError) {
-  // Only field + message. Never echoes submitted values (no passwords leak).
-  return zodError.issues.map((issue) => ({
-    field: issue.path.join("."),
-    message: issue.message,
-  }));
-}
 
 function isUniqueViolation(err) {
   return (

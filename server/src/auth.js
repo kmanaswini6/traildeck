@@ -3,6 +3,20 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { sendError } from "./errors.js";
 
+// Role authorization. Runs after requireAuth and reads the role it attached
+// (req.userId / req.userRole). Never re-verifies the token.
+export function requireRole(...roles) {
+  return (req, res, next) => {
+    if (!req.userId) {
+      return sendError(res, 401, "UNAUTHENTICATED", "Authentication required.");
+    }
+    if (!roles.includes(req.userRole)) {
+      return sendError(res, 403, "FORBIDDEN", "Access denied.");
+    }
+    return next();
+  };
+}
+
 // Fields a client is ever allowed to see. Selected explicitly everywhere;
 // the password hash is never read into responses.
 export const SAFE_USER_SELECT = {

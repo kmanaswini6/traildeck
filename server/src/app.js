@@ -1,6 +1,7 @@
 import express from "express";
 import { sendError } from "./errors.js";
 import authRouter from "./routes/auth.js";
+import clientsRouter from "./routes/clients.js";
 
 // The app is exported without listening so Supertest can test it in-process.
 export const app = express();
@@ -8,6 +9,7 @@ export const app = express();
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
+app.use("/api/clients", clientsRouter);
 
 app.use((req, res) => {
   sendError(res, 404, "NOT_FOUND", "Route not found.");
